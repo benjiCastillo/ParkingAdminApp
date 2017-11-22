@@ -1,0 +1,99 @@
+{
+  "project_info": {
+    "project_number": "524793348672",
+    "firebase_url": "https://parkingsucre.firebaseio.com",
+    "project_id": "parkingsucre",
+    "storage_bucket": "parkingsucre.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:524793348672:android:4bbfd918d5b6c563",
+        "android_client_info": {
+          "package_name": "software.kaya.com.parkingapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "524793348672-onk6t35bc0ks5frqt0nh3di1jrfdf4qm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "software.kaya.com.parkingapp",
+            "certificate_hash": "2e6d92cc5f3662afabec42ec67aab48d68c1af36"
+          }
+        },
+        {
+          "client_id": "524793348672-to2qn8gt78mpfhlob588resqoo8i3jpr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBIiS3s1kG9X2E3YHyVo8kauoz-gL9WAG0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "524793348672-to2qn8gt78mpfhlob588resqoo8i3jpr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:524793348672:android:8b58ebe73133f037",
+        "android_client_info": {
+          "package_name": "com.grupo_ciencia.parkingadminapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "524793348672-k7mbncc1qtbsptngave7fvgsnb8k9rqu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.grupo_ciencia.parkingadminapp",
+            "certificate_hash": "2754c6e2ae911139de6cab3ff6945a46530f5e83"
+          }
+        },
+        {
+          "client_id": "524793348672-to2qn8gt78mpfhlob588resqoo8i3jpr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBIiS3s1kG9X2E3YHyVo8kauoz-gL9WAG0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "524793348672-to2qn8gt78mpfhlob588resqoo8i3jpr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

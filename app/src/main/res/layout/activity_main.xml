@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.grupo_ciencia.parkingadminapp.MainActivity">
+    <ProgressBar android:id="@+id/loading_spinner"
+        style="?android:progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:weightSum="1"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.325"
+            android:orientation="vertical"
+            android:gravity="center"
+           >
+            <include
+                layout="@layout/cardview_data_user">
+
+            </include>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/main_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.29"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/decrease"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:theme="@style/RaiseButtonPrimary"
+                android:onClick="decreaseInteger"
+                android:text="-" />
+
+            <TextView
+                android:id="@+id/integer_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
+                android:layout_marginTop="16dp"
+                android:text="0"
+                android:textStyle="bold"
+                android:textSize="70sp" />
+
+            <Button
+                android:id="@+id/increase"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="increaseInteger"
+                android:theme="@style/RaiseButtonPrimary"
+                android:text="+" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.3"
+            android:fillViewport="true"
+            android:padding="40dp"
+            android:orientation="vertical">
+            <ToggleButton
+                android:id="@+id/btn_toggle_disponible"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textOff="Cerrado"
+                android:textOn="Disponible"
+                android:checked="true"
+                />
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"
+                >
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/edtSpaces"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Cantidad de Espacios"
+                    android:inputType="numberSigned"
+
+                    />
+            </android.support.design.widget.TextInputLayout>
+            <Button
+                android:id="@+id/btn_update_spaces"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Actualizar"
+                android:visibility="invisible"
+                android:theme="@style/RaiseButtonPrimary"/>
+
+
+        </LinearLayout>
+
+
+   </LinearLayout>
+
+
+</android.support.design.widget.CoordinatorLayout>

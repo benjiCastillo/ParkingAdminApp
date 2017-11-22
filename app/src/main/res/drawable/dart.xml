@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="256dp"
+    android:height="256dp"
+    android:viewportWidth="256"
+    android:viewportHeight="256">
+
+    <path
+        android:name="canvas_background"
+        android:pathData="M-1,-1 L581,-1 L581,401 L-1,401 L-1,-1 Z" />
+    <path
+        android:name="svg_2"
+        android:fillColor="#21BBD1"
+        android:pathData="M64.0457,126.72 C64.0457,90.0206,93.9044,60.16,130.606,60.16
+C167.305,60.16,197.166,90.0206,197.166,126.72
+C197.166,163.421,167.305,193.28,130.606,193.28
+C93.9047,193.28,64.046,163.421,64.046,126.72 L64.046,126.72 Z" />
+    <path
+        android:name="svg_3"
+        android:fillColor="#D32F2F"
+        android:pathData="M256,20.48 C256,9.216,246.12,0,234.856,0 L130.605,0
+C59.9143,0,-0.001,56.0274,-0.001,126.72 L-0.001,256 L31.0847,256 L31.0847,126.72
+C31.0847,73.0807,75.8463,29.44,129.486,29.44
+C183.125,29.44,227.324,73.0789,227.324,126.72
+C227.324,180.359,183.027,224,129.388,224
+C103.653,224,76.8001,213.939,62.1715,197.568 L62.1715,256 L130.606,256
+C201.299,256,256,197.413,256,126.72 L256,20.48 L256,20.48 Z" />
+</vector>
