@@ -27,11 +27,15 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
     public static final String TAG = "MainActivity";
@@ -56,6 +60,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
 
     Parking parking = new Parking();
+    Visitor visitor = new Visitor();
 
 
     @Override
@@ -268,6 +273,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         if (parking.getId_parking() != null){
             Log.i(TAG," id Taxi "+parking.getId_parking());
             mChildReference.child(parking.getId_parking()).child("spaces_quantity").setValue(spaces);
+            //insertNumberUser(parking.getId_parking().toString());
+            checkNumberUser(parking.getId_parking().toString());
         }
     }
 
@@ -324,6 +331,95 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         displayInteger.setText("" + number);
     }
 
+    private void checkNumberUser(String id){
+       final String  id1 = id;
+
+
+        mChildReference.child(id1).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.child("visitors").exists()){
+                    findVisitors(id1);
+                    insertNumberUser(id1);
+
+                }else{
+                   insertNumberUser(id1);
+                    Toast.makeText(getApplicationContext(), "No existe visitor", Toast.LENGTH_LONG).show();
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+    private void insertNumberUser(String id){
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat mdformat = new SimpleDateFormat("yyyy/MM/dd");
+        String strDate =  mdformat.format(calendar.getTime());
+        visitor.setDate(strDate);
+        visitor.setQuantity(1);
+        mChildReference.child(id).child("visitors").push().setValue(visitor, new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                if (databaseError != null) {
+                    Toast.makeText(getApplicationContext(), "Ocurrio un Error : |", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Data visitor", Toast.LENGTH_LONG).show();
+
+                }
+            }
+        });
+    }
+
+    private void findVisitors(String id){
+        mChildReference.child(id).child("visitors").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+//                if(dataSnapshot.getKey().equals("visitors")){
+
+//                    Log.i("FIND VISITOR ",dataSnapshot.getKey()+"");
+                for(DataSnapshot child:dataSnapshot.getChildren())  {
+                    Log.i("CHILD  ", child.getValue()+"");
+                }
+
+//                }
+
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+    private void upDateNumberVisitors(String id, int quantity){
+
+        if (parking.getId_parking() != null){
+            Log.i(TAG," id Taxi "+parking.getId_parking());
+            mChildReference.child(parking.getId_parking()).child("visitors").child(id).child("quantity").setValue(quantity);
+           // insertNumberUser(parking.getId_parking().toString());
+        }
+    }
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
