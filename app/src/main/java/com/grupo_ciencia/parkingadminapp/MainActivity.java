@@ -384,7 +384,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
 //                    Log.i("FIND VISITOR ",dataSnapshot.getKey()+"");
                 for(DataSnapshot child:dataSnapshot.getChildren())  {
-                    Log.i("CHILD  ", child.getValue()+"");
+
+                 //   Log.i("CHILD  ", child.getKey()+"");
+                    if(child.getKey().equals("date") && child.getValue().equals("2017/11/23")){
+                        Log.i("CHILD key ", dataSnapshot.getKey()+"");
+                    }
                 }
 
 //                }
