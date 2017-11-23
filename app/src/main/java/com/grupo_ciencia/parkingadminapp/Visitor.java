@@ -13,20 +13,9 @@ public class Visitor {
         this.date = date;
     }
 
-    public int getQuantity() {
-        return quantity;
-    }
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
-
-    public Visitor(String date, int quantity) {
-        this.date = date;
-        this.quantity = quantity;
-    }
     public Visitor(){}
     private String date;
-    private int quantity;
+
 
 }

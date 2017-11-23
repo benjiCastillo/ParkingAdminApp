@@ -2,8 +2,10 @@ package com.grupo_ciencia.parkingadminapp;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -36,6 +38,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
     public static final String TAG = "MainActivity";
@@ -47,6 +50,15 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     private EditText edtSpaces_quantity;
     private ToggleButton btnDisponible;
     private Button btnUpdateSpaces;
+    private int visitors;
+
+    public int getVisitors() {
+        return visitors;
+    }
+
+    public void setVisitors(int visitors) {
+        this.visitors = visitors;
+    }
 
     private GoogleApiClient googleApiClient;
 
@@ -54,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     private FirebaseAuth.AuthStateListener authStateListener;
     private LinearLayout mainLayout;
     private ProgressBar progressBar;
-
+    private AlertDialog  dialog;
     private int mMediumAnimationDuration;
 
 
@@ -169,13 +181,19 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if(R.id.menu == id){
-            logOut();
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.menu:
+                logOut();
+                return true;
+            case R.id.reportes:
+                //showHelp();
+                dialog = dialogAccept();
+                dialog.show();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-
-        return super.onOptionsItemSelected(item);
-
     }
 
     @Override
@@ -210,14 +228,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                         strStatus = child.child("status").getValue().toString();
                         status = Boolean.valueOf(strStatus);
 
-                        Log.i(TAG, "user key "+child.getKey());
-                        Log.i(TAG, "user ref "+child.getRef().toString());
-                        Log.i(TAG, "user val "+child.getValue().toString());
-                        Log.i(TAG, "user val "+child.child("name_admin").getValue().toString());
                         parking.setId_parking(child.getKey().toString());
                         parking.setName_admin(child.child("name_admin").getValue().toString());
                         parking.setLast_name_admin(child.child("last_name_admin").getValue().toString());
-
                         parking.setName_parking(child.child("name").getValue().toString());
                         parking.setSpaces_quantity(spaces);
                         parking.setStatus(status);
@@ -230,9 +243,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                                 .alpha(1f)
                                 .setDuration(mMediumAnimationDuration)
                                 .setListener(null);
-
-
-                        //  progressBar.setVisibility(View.GONE);
                         progressBar.animate()
                                 .alpha(0f)
                                 .setDuration(mMediumAnimationDuration)
@@ -254,8 +264,41 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
             });
 
         }
+    }
 
+    public void getNumberVisitors(String id){
+        final AtomicInteger count = new AtomicInteger();
+        mChildReference.child(id).child("visitors").orderByChild("date").equalTo(getDateStr()).addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                int newCount = count.incrementAndGet();
+                System.out.println(dataSnapshot.getValue());
+                System.out.println("datos "+newCount);
+                setVisitors(newCount);
 
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+            // ...
+        });
     }
     private void sendUserData(){
         String spaces = "";
@@ -273,7 +316,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         if (parking.getId_parking() != null){
             Log.i(TAG," id Taxi "+parking.getId_parking());
             mChildReference.child(parking.getId_parking()).child("spaces_quantity").setValue(spaces);
-            //insertNumberUser(parking.getId_parking().toString());
             checkNumberUser(parking.getId_parking().toString());
         }
     }
@@ -321,6 +363,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         }else{
             upDateSpaces(minteger);
             display(minteger);
+            insertNumberUser(parking.getId_parking().toString());
         }
 
     }
@@ -334,19 +377,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     private void checkNumberUser(String id){
        final String  id1 = id;
 
-
         mChildReference.child(id1).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot.child("visitors").exists()){
-                    findVisitors(id1);
-                    insertNumberUser(id1);
-
-                }else{
-                   insertNumberUser(id1);
-                    Toast.makeText(getApplicationContext(), "No existe visitor", Toast.LENGTH_LONG).show();
-                }
-
+               // insertNumberUser(id1);
+                getNumberVisitors(id1);
             }
 
             @Override
@@ -357,73 +392,45 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
     }
 
-    private void insertNumberUser(String id){
+    private String getDateStr(){
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat mdformat = new SimpleDateFormat("yyyy/MM/dd");
         String strDate =  mdformat.format(calendar.getTime());
+        return strDate;
+    }
+
+    private void insertNumberUser(String id){
+        String strDate = "";
+        strDate = getDateStr();
         visitor.setDate(strDate);
-        visitor.setQuantity(1);
         mChildReference.child(id).child("visitors").push().setValue(visitor, new DatabaseReference.CompletionListener() {
             @Override
             public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
                 if (databaseError != null) {
                     Toast.makeText(getApplicationContext(), "Ocurrio un Error : |", Toast.LENGTH_LONG).show();
                 } else {
-                    Toast.makeText(getApplicationContext(), "Data visitor", Toast.LENGTH_LONG).show();
-
+//                    Toast.makeText(getApplicationContext(), "Data visitor", Toast.LENGTH_LONG).show();
                 }
             }
         });
     }
 
-    private void findVisitors(String id){
-        mChildReference.child(id).child("visitors").addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-//                if(dataSnapshot.getKey().equals("visitors")){
+    private AlertDialog dialogAccept(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-//                    Log.i("FIND VISITOR ",dataSnapshot.getKey()+"");
-                for(DataSnapshot child:dataSnapshot.getChildren())  {
+        builder.setTitle("Visitas al Parqueo hoy")
+                .setMessage(getVisitors()+"")
+                .setNegativeButton("Cerrar",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
 
-                 //   Log.i("CHILD  ", child.getKey()+"");
-                    if(child.getKey().equals("date") && child.getValue().equals("2017/11/23")){
-                        Log.i("CHILD key ", dataSnapshot.getKey()+"");
-                    }
-                }
+                            }
+                        });
 
-//                }
-
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+        return builder.create();
     }
-    private void upDateNumberVisitors(String id, int quantity){
 
-        if (parking.getId_parking() != null){
-            Log.i(TAG," id Taxi "+parking.getId_parking());
-            mChildReference.child(parking.getId_parking()).child("visitors").child(id).child("quantity").setValue(quantity);
-           // insertNumberUser(parking.getId_parking().toString());
-        }
-    }
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {

@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".MainActivity">
-    <item android:id="@+id/datos"
+    <item android:id="@+id/reportes"
         android:title="Reportes"
         app:showAsAction="never"
         android:orderInCategory="100"/>

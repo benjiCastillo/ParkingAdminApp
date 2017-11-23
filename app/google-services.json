@@ -59,6 +59,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "524793348672-e1aqaivgdkqpn31im4sh62p6j8q1mtrd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.grupo_ciencia.parkingadminapp",
+            "certificate_hash": "d6a00885d0eec2f1883ff444e7f09ca461e0ca6d"
+          }
+        },
+        {
           "client_id": "524793348672-k7mbncc1qtbsptngave7fvgsnb8k9rqu.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
